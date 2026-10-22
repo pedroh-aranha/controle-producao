@@ -4,18 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <main class="painel">
       <h1>Ordens de Produção</h1>
 
       <button id="modo-tv">Modo TV</button>
+
+      <form id="form-op">
+
+          <label for="porduto">Produto:</label>
+          <input type="text" name="produto" id="produto">
+
+          <label for="quantidade">Quantidade:</label>
+          <Input type=" number" name="quantidade" id="quantidade" min="1">
+
+          <label for="maquina">maquina:</label>
+          <select name="maquina" id="maquina">
+            <option value="cnc">Torno CNC</option>
+            <option value="prensa">Prensa</option>
+            <option value="injetora">Injetora</option>
+            <option value="solda">Solda</option>
+          </select>
+
+          <button type="submit">Abrir OP</button>
+
+          <p id="mensagem" class="erro" hidden></p>
+
+
+      </form>
+
       <p id="resumo" class="resultado"></p>
 
-      <ul id="lista" class="lista-ops">
-       
-      </ul>
+      <label for="busca">Buscar produto</label>
+      <input id="busca" type="search">
+
+      <button class="filtro" data-filtro="todas">Todas</button>
+      <button class="filtro" data-filtro="aguardando">Aguardando</button>
+      <button class="filtro" data-filtro="producao">Produção</button>
+      <button class="filtro" data-filtro="concluida">Concluída</button>
+
+      <ul id="lista" class="lista-ops"></ul>
+
+      <p id="vazia" hidden>Nenhuma ordem encontrada.</p>
+
     </main>
 
     <script src="js/ordens.js"></script>
