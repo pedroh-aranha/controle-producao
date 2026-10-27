@@ -3,6 +3,8 @@ const resume = document.querySelector("#resumo");
 const botaoTV = document.querySelector("#modo-tv");
 const formOp = document.querySelector("#form-op");
 const botoes = document.querySelectorAll(".filtro");
+const busca = document.querySelector("#busca");
+const vazia = document.querySelector("#vazia");
 let filtros = "todas";
 let aguardando = 0,
   concluido = 0,
@@ -48,7 +50,7 @@ function criarOP(op) {
   const item = document.createElement("li"); // 1. cria (fora da tela)
   item.classList.add("op", "status-" + op.status);
   const titulo = document.createElement("h3");
-  titulo.textContent = "OP-" + op.numero + " · " + op.produto; // 2. preenche
+  titulo.textContent = "OP-" + op.numero + " · " + op.produto + " \nquantidade " + op.quantidade; // 2. preenche
   item.append(titulo); // 3. monta o card
   lista.append(item); // 4. coloca na página
 
@@ -107,11 +109,11 @@ botoes.forEach((btn) => {
 
 formOp.addEventListener("submit", (event) => {
   event.preventDefault();
-  const produto = document.querySelector("#produto").value.trim();
+  const produto = document.querySelector("#produto");
   const qtd = Number(document.querySelector("#quantidade").value);
   const maquina = document.querySelector("#maquina");
   const mensagem = document.querySelector("#mensagem");
-  if (produto === "" || qtd <= 0) {
+  if (produto.value.trim() === "" || qtd <= 0) {
     const texto = "Informe o produto e uma quantidade maior que zero.";
     mensagem.hidden = false;
     mensagem.textContent = texto;
@@ -120,16 +122,15 @@ formOp.addEventListener("submit", (event) => {
     mensagem.textContent = "";
     ordens.push({
       numero: ordens[ordens.length - 1].numero + 1,
-      produto,
+      produto:produto.value.trim(),
       quantidade: qtd,
       status: "aguardando",
       maquina: maquina.value,
     });
-    proximoNumero++; // a próxima será 106
-
-    mensagem.hidden = true; // esconde o erro, se estava aparecendo
-    form.reset(); // limpa os campos
-    campoProduto.focus(); // cursor de volta no Produto
+    
+    mensagem.hidden = true;
+    formOp.reset();
+    produto.focus()
     desenhar();
   }
 });
@@ -154,11 +155,41 @@ function desenhar() {
     if (op.status === "concluida") {
       concluido++;
     }
-  });
-  const texto =
-    "Mostrando " +
-    ordensSelecionadas.length +
-    " de " +
+
+    let visiveis = ordens
+    if (filtros !== "todas") {
+      visiveis = ordens.filter((op) => op.status === filtros)
+    }
+    const textoBuscar = busca.value.trim().toLowerCase()
+    visiveis = visiveis.filter((op) => op.produto.toLowerCase().includes(textoBuscar))
+  
+    lista.textContent = ""
+    visiveis.forEach((op) => {
+      lista.append(criarOP(op))
+    })
+    vazia.hidden = visiveis.length > 0
+    atualizarResumo(visiveis.length)
+    })
+
+  };
+
+  function atualizarResumo() {
+    let aguardando = 0
+    let producao = 0
+    let concluido = 0
+    ordens.forEach((op) => {
+     if (op.status === "aguardando") {
+      aguardando++;
+    }
+    if (op.status === "producao") {
+      producao++;
+    }
+    if (op.status === "concluida") {
+      concluido++;
+    }
+    });
+    
+    const texto =
     ordens.length +
     " ordens no painel\n" +
     "aguardando: " +
@@ -168,7 +199,9 @@ function desenhar() {
     " - concluida: " +
     concluido;
 
-  resumo.textContent = texto;
-}
+  resume.textContent = texto;
+  }
+
+busca.addEventListener("input", desenhar)
 
 desenhar();

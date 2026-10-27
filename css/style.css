@@ -5,7 +5,7 @@
 :root {
   --cor-fundo: #FFFFFF;
   --cor-texto: #1E2A38;
-  --cor-destaque: #E07A2E;
+  --cor-destaque: #3b166b;
   --cor-borda: #D9DDD3;
   --cor-suave: #F4F5EF;
 }
@@ -94,7 +94,7 @@ button:focus-visible {
 .erro   { border-color: #C62828; background: #FFEBEE; }
 /* ===== 6. Painel de Ordens de Produção ===== */
 .painel { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem; }
-.lista-ops { list-style: none; padding: 0; }
+.lista-ops { list-style: none; padding: 0;  white-space: pre-line; }
 .op {
   margin-top: 1rem;
   padding: 1rem;
@@ -104,7 +104,7 @@ button:focus-visible {
 }
 .op h3 { margin: 0; }
 .op p  { margin: 0.25rem 0; }
-.status-aguardando { border-left-color: #F9A825; }
+.status-aguardando { border-left-color: #c9871e; }
 .status-producao   { border-left-color: #1565C0; }
 .status-concluida  { border-left-color: #2E7D32; opacity: 0.7; }
 .filtro.selecionado { outline: 3px solid var(--cor-texto); }
@@ -112,5 +112,5 @@ button:focus-visible {
   --cor-fundo: #111111;
   --cor-texto: #FFFFFF;
   --cor-borda: #444444;
-  --cor-suave: #222222; 
+  --cor-suave: #222222;
 }
